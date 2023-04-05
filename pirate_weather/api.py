@@ -1,9 +1,11 @@
 from datetime import datetime
 from enum import Enum
+
 import aiohttp
 
 from .forecast import Forecast
-from .request_manager import BaseRequestManger, RequestManger, RequestMangerAsync
+from .request_manager import (BaseRequestManger, RequestManger,
+                              RequestMangerAsync)
 from .types import languages, units, weather
 
 
