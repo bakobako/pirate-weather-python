@@ -35,7 +35,9 @@ Use of synchronous client:
 
 ```python
 from pirate_weather.api import PirateWeather
-from pirate_weather.types import languages, units, weather
+from pirate_weather.types.languages import Languages
+from pirate_weather.types.units import Units
+from pirate_weather.types.weather import Weather
 
 API_KEY = "0123456789"
 pirate_weather = PirateWeather(API_KEY)
@@ -45,10 +47,10 @@ longitude = -71.0589
 forecast = pirate_weather.get_forecast(
     latitude, longitude,
     extend=False,  # default `False`
-    lang=languages.ENGLISH,  # default `ENGLISH`
-    values_units=units.AUTO,  # default `auto`
-    exclude=[weather.MINUTELY, weather.ALERTS],  # default `[]`,
-    timezone='UTC'  # default None - will be set by DarkSky API automatically
+    lang=Languages.ENGLISH,  # default `ENGLISH`
+    values_units=Units.AUTO,  # default `auto`
+    exclude=[Weather.MINUTELY, Weather.ALERTS],  # default `[]`,
+    timezone='UTC'  # default None - will be set by Pirate Weather API automatically
 )
 ```
 
@@ -56,7 +58,9 @@ Use of synchronous timemachine client:
 
 ```python
 from pirate_weather.api import PirateWeather
-from pirate_weather.types import languages, units, weather
+from pirate_weather.types.languages import Languages
+from pirate_weather.types.units import Units
+from pirate_weather.types.weather import Weather
 from datetime import datetime as dt
 
 API_KEY = "0123456789"
@@ -68,10 +72,10 @@ longitude = -71.0589
 forecast = pirate_weather.get_time_machine_forecast(
     latitude, longitude,
     extend=False,  # default `False`
-    lang=languages.ENGLISH,  # default `ENGLISH`
-    values_units=units.AUTO,  # default `auto`
-    exclude=[weather.MINUTELY, weather.ALERTS],  # default `[]`,
-    timezone='UTC',  # default None - will be set by DarkSky API automatically
+    lang=Languages.ENGLISH,  # default `ENGLISH`
+    values_units=Units.AUTO,  # default `auto`
+    exclude=[Weather.MINUTELY, Weather.ALERTS],  # default `[]`,
+    timezone='UTC',  # default None - will be set by Pirate Weather API automatically
     time=t
 )
 ```
@@ -80,7 +84,9 @@ Use of synchronous client getting recent timemachine data:
 
 ```python
 from pirate_weather.api import PirateWeather
-from pirate_weather.types import languages, units, weather
+from pirate_weather.types.languages import Languages
+from pirate_weather.types.units import Units
+from pirate_weather.types.weather import Weather
 from datetime import datetime as dt
 
 API_KEY = "0123456789"
@@ -92,10 +98,10 @@ longitude = -71.0589
 forecast = pirate_weather.get_recent_time_machine_forecast(
     latitude, longitude,
     extend=False,  # default `False`
-    lang=languages.ENGLISH,  # default `ENGLISH`
-    values_units=units.AUTO,  # default `auto`
-    exclude=[weather.MINUTELY, weather.ALERTS],  # default `[]`,
-    timezone='UTC',  # default None - will be set by DarkSky API automatically
+    lang=Languages.ENGLISH,  # default `ENGLISH`
+    values_units=Units.AUTO,  # default `auto`
+    exclude=[Weather.MINUTELY, Weather.ALERTS],  # default `[]`,
+    timezone='UTC',  # default None - will be set by Pirate Weather API automatically
     time=t
 )
 ```
@@ -104,7 +110,9 @@ Use of asynchronous client:
 
 ```python
 from pirate_weather.api import PirateWeatherAsync
-from pirate_weather.types import languages, units, weather
+from pirate_weather.types.languages import Languages
+from pirate_weather.types.units import Units
+from pirate_weather.types.weather import Weather
 
 import asyncio
 import aiohttp
@@ -112,18 +120,18 @@ import aiohttp
 
 async def main(api_key):
     async with aiohttp.ClientSession() as session:
-        darksky = PirateWeatherAsync(api_key)
+        pirate_weather = PirateWeatherAsync(api_key)
 
         latitude = 42.3601
         longitude = -71.0589
-        forecast = await darksky.get_forecast(
+        forecast = await pirate_weather.get_forecast(
             latitude, longitude,
-            extend=False,  # default `False`
-            lang=languages.ENGLISH,  # default `ENGLISH`
-            values_units=units.AUTO,  # default `auto`
-            exclude=[weather.MINUTELY, weather.ALERTS],  # default `[]`
-            timezone='UTC',  # default None - will be set by DarkSky API automatically,
-            client_session=session  # default aiohttp.ClientSession()
+        extend=False,  # default `False`
+        lang=Languages.ENGLISH,  # default `ENGLISH`
+        values_units=Units.AUTO,  # default `auto`
+        exclude=[Weather.MINUTELY, Weather.ALERTS],  # default `[]`,
+        timezone='UTC',  # default None - will be set by Pirate Weather API automatically
+         client_session=session  # default aiohttp.ClientSession()
         )
 
 api_key = "0123456789"

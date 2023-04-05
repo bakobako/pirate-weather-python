@@ -7,7 +7,9 @@ import pytz
 from .forecast import Forecast
 from .request_manager import (BaseRequestManger, RequestManger,
                               RequestMangerAsync)
-from .types import languages, units, weather
+from .types.languages import Languages
+from .types.units import Units
+from .types.weather import Weather
 
 
 class PirateWeatherApiVersion(str, Enum):
@@ -26,9 +28,9 @@ class BasePirateWeather:
             latitude: float,
             longitude: float,
             extend: bool = None,
-            lang=languages.ENGLISH,
-            values_units=units.AUTO,
-            exclude: [weather] = None,
+            lang=Languages.ENGLISH,
+            values_units=Units.AUTO,
+            exclude: [Weather] = None,
             timezone: str = None,
     ):
         raise NotImplementedError
@@ -39,9 +41,9 @@ class BasePirateWeather:
             longitude: float,
             time: datetime,
             extend: bool = False,
-            lang=languages.ENGLISH,
-            values_units=units.AUTO,
-            exclude: [weather] = None,
+            lang=Languages.ENGLISH,
+            values_units=Units.AUTO,
+            exclude: [Weather] = None,
             timezone: str = None,
     ):
         raise NotImplementedError
@@ -95,15 +97,15 @@ class PirateWeather(BasePirateWeather):
             latitude: float,
             longitude: float,
             extend: bool = None,
-            lang=languages.ENGLISH,
-            values_units=units.AUTO,
-            exclude: [weather] = None,
+            lang=Languages.ENGLISH,
+            values_units=Units.AUTO,
+            exclude: [Weather] = None,
             timezone: str = None,
     ) -> Forecast:
         url = self.get_url(latitude, longitude)
         data = self.request_manager.make_request(
             url=url,
-            extend=weather.HOURLY if extend else None,
+            extend=Weather.HOURLY if extend else None,
             lang=lang,
             units=values_units,
             exclude=exclude,
@@ -117,16 +119,16 @@ class PirateWeather(BasePirateWeather):
             longitude: float,
             time: datetime,
             extend: bool = False,
-            lang=languages.ENGLISH,
-            values_units=units.AUTO,
-            exclude: [weather] = None,
+            lang=Languages.ENGLISH,
+            values_units=Units.AUTO,
+            exclude: [Weather] = None,
             timezone: str = None,
     ) -> Forecast:
         url = self.get_url(latitude, longitude, int(time.timestamp()),
                            api_version=PirateWeatherApiVersion.TIME_MACHINE)
         data = self.request_manager.make_request(
             url=url,
-            extend=weather.HOURLY if extend else None,
+            extend=Weather.HOURLY if extend else None,
             lang=lang,
             units=values_units,
             exclude=exclude,
@@ -140,9 +142,9 @@ class PirateWeather(BasePirateWeather):
             longitude: float,
             time: datetime,
             extend: bool = None,
-            lang=languages.ENGLISH,
-            values_units=units.AUTO,
-            exclude: [weather] = None,
+            lang=Languages.ENGLISH,
+            values_units=Units.AUTO,
+            exclude: [Weather] = None,
             timezone: str = None,
     ) -> Forecast:
         required_time = int(time.timestamp())
@@ -156,7 +158,7 @@ class PirateWeather(BasePirateWeather):
         url = self.get_url(latitude, longitude, diff)
         data = self.request_manager.make_request(
             url=url,
-            extend=weather.HOURLY if extend else None,
+            extend=Weather.HOURLY if extend else None,
             lang=lang,
             units=values_units,
             exclude=exclude,
@@ -181,15 +183,15 @@ class PirateWeatherAsync(BasePirateWeather):
                            longitude: float,
                            client_session: aiohttp.ClientSession,
                            extend: bool = None,
-                           lang=languages.ENGLISH,
-                           values_units=units.AUTO,
-                           exclude: [weather] = None,
+                           lang=Languages.ENGLISH,
+                           values_units=Units.AUTO,
+                           exclude: [Weather] = None,
                            timezone: str = None,
                            ) -> Forecast:
         url = self.get_url(latitude, longitude)
         data = await self.request_manager.make_request(
             url=url,
-            extend=weather.HOURLY if extend else None,
+            extend=Weather.HOURLY if extend else None,
             lang=lang,
             units=values_units,
             exclude=exclude,
@@ -204,15 +206,15 @@ class PirateWeatherAsync(BasePirateWeather):
                                         time: datetime,
                                         client_session: aiohttp.ClientSession,
                                         extend: bool = False,
-                                        lang=languages.ENGLISH,
-                                        values_units=units.AUTO,
-                                        exclude: [weather] = None,
+                                        lang=Languages.ENGLISH,
+                                        values_units=Units.AUTO,
+                                        exclude: [Weather] = None,
                                         timezone: str = None
                                         ) -> Forecast:
         url = self.get_url(latitude, longitude, int(time.timestamp()))
         data = await self.request_manager.make_request(
             url=url,
-            extend=weather.HOURLY if extend else None,
+            extend=Weather.HOURLY if extend else None,
             lang=lang,
             units=values_units,
             exclude=exclude,
