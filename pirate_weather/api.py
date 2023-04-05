@@ -121,7 +121,8 @@ class PirateWeather(BasePirateWeather):
             exclude: [weather] = None,
             timezone: str = None,
     ) -> Forecast:
-        url = self.get_url(latitude, longitude, int(time.timestamp()), api_version=PirateWeatherApiVersion.TIME_MACHINE)
+        url = self.get_url(latitude, longitude, int(time.timestamp()),
+                           api_version=PirateWeatherApiVersion.TIME_MACHINE)
         data = self.request_manager.make_request(
             url=url,
             extend=weather.HOURLY if extend else None,
