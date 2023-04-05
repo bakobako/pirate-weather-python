@@ -23,6 +23,12 @@ pip3 install pirate_weather_python
 Before you start using this library, you need to get your API key
 [here](https://pirate-weather.apiable.io/).
 
+#### Notes on functionality
+
+The Pirate Weather timemachine data is limited in availability, it is only possible to fetch data about 1-2 months ago.
+For recent historical weather data use the get_recent_time_machine_forecast which will have data from about 1-5 days prior.
+Unfortunately, at the time of writing this it is not possible to get data from 2 weeks ago for example.
+
 All classes are fully annotated, source code is your best doc : )
 
 Use of synchronous client:
@@ -60,6 +66,30 @@ t = dt(2022, 5, 6, 12)
 latitude = 42.3601
 longitude = -71.0589
 forecast = pirate_weather.get_time_machine_forecast(
+    latitude, longitude,
+    extend=False,  # default `False`
+    lang=languages.ENGLISH,  # default `ENGLISH`
+    values_units=units.AUTO,  # default `auto`
+    exclude=[weather.MINUTELY, weather.ALERTS],  # default `[]`,
+    timezone='UTC',  # default None - will be set by DarkSky API automatically
+    time=t
+)
+```
+
+Use of synchronous client getting recent timemachine data:
+
+```python
+from pirate_weather.api import PirateWeather
+from pirate_weather.types import languages, units, weather
+from datetime import datetime as dt
+
+API_KEY = "0123456789"
+pirate_weather = PirateWeather(API_KEY)
+t = dt(2023, 4, 4)
+
+latitude = 42.3601
+longitude = -71.0589
+forecast = pirate_weather.get_recent_time_machine_forecast(
     latitude, longitude,
     extend=False,  # default `False`
     lang=languages.ENGLISH,  # default `ENGLISH`

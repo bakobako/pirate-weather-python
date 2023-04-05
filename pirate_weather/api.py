@@ -2,6 +2,7 @@ from datetime import datetime
 from enum import Enum
 
 import aiohttp
+import pytz
 
 from .forecast import Forecast
 from .request_manager import (BaseRequestManger, RequestManger,
@@ -123,6 +124,36 @@ class PirateWeather(BasePirateWeather):
     ) -> Forecast:
         url = self.get_url(latitude, longitude, int(time.timestamp()),
                            api_version=PirateWeatherApiVersion.TIME_MACHINE)
+        data = self.request_manager.make_request(
+            url=url,
+            extend=weather.HOURLY if extend else None,
+            lang=lang,
+            units=values_units,
+            exclude=exclude,
+            timezone=timezone,
+        )
+        return Forecast(**data)
+
+    def get_recent_time_machine_forecast(
+            self,
+            latitude: float,
+            longitude: float,
+            time: datetime,
+            extend: bool = None,
+            lang=languages.ENGLISH,
+            values_units=units.AUTO,
+            exclude: [weather] = None,
+            timezone: str = None,
+    ) -> Forecast:
+        required_time = int(time.timestamp())
+        current_time = int(datetime.now().timestamp())
+        if timezone:
+            tz = pytz.timezone(timezone)
+            current_time = datetime.now(tz)
+
+        diff = required_time - current_time
+
+        url = self.get_url(latitude, longitude, diff)
         data = self.request_manager.make_request(
             url=url,
             extend=weather.HOURLY if extend else None,
