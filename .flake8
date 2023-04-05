@@ -1,2 +1,3 @@
 [flake8]
 exclude = venv/*,tests/data.py
+max-line-length = 120

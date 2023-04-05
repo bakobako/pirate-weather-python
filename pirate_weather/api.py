@@ -45,7 +45,8 @@ class BasePirateWeather:
     ):
         raise NotImplementedError
 
-    def get_url(self, latitude: float, longitude: float, time=None, api_version=PirateWeatherApiVersion.BASE, **params):
+    def get_url(self, latitude: float, longitude: float, time=None,
+                api_version=PirateWeatherApiVersion.BASE, **params):
         host = api_version
         valid_lat_long = self.validate_lat_long(latitude=latitude, longitude=longitude)
         if not valid_lat_long:
