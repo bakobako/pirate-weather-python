@@ -1,0 +1,3 @@
+[run]
+source=pirate_weather
+omit=venv/*
