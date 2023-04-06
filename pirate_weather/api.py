@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import Enum
+from typing import List, Optional
 
 import aiohttp
 import pytz
@@ -47,6 +48,13 @@ class BasePirateWeather:
             timezone: str = None,
     ):
         raise NotImplementedError
+
+    @staticmethod
+    def convert_exclude_param_to_string(exclude: Optional[List[Weather]]):
+        if exclude:
+            exclude = [ex.value for ex in exclude]
+            exclude = ",".join(exclude)
+        return exclude
 
     def get_url(self, latitude: float, longitude: float, time=None,
                 api_version=PirateWeatherApiVersion.BASE, **params):
@@ -103,6 +111,7 @@ class PirateWeather(BasePirateWeather):
             timezone: str = None,
     ) -> Forecast:
         url = self.get_url(latitude, longitude)
+        exclude = self.convert_exclude_param_to_string(exclude)
         data = self.request_manager.make_request(
             url=url,
             extend=Weather.HOURLY if extend else None,
@@ -126,6 +135,7 @@ class PirateWeather(BasePirateWeather):
     ) -> Forecast:
         url = self.get_url(latitude, longitude, int(time.timestamp()),
                            api_version=PirateWeatherApiVersion.TIME_MACHINE)
+        exclude = self.convert_exclude_param_to_string(exclude)
         data = self.request_manager.make_request(
             url=url,
             extend=Weather.HOURLY if extend else None,
@@ -154,6 +164,8 @@ class PirateWeather(BasePirateWeather):
             current_time = datetime.now(tz)
 
         diff = required_time - current_time
+
+        exclude = self.convert_exclude_param_to_string(exclude)
 
         url = self.get_url(latitude, longitude, diff)
         data = self.request_manager.make_request(
@@ -189,6 +201,7 @@ class PirateWeatherAsync(BasePirateWeather):
                            timezone: str = None,
                            ) -> Forecast:
         url = self.get_url(latitude, longitude)
+        exclude = self.convert_exclude_param_to_string(exclude)
         data = await self.request_manager.make_request(
             url=url,
             extend=Weather.HOURLY if extend else None,
@@ -212,6 +225,7 @@ class PirateWeatherAsync(BasePirateWeather):
                                         timezone: str = None
                                         ) -> Forecast:
         url = self.get_url(latitude, longitude, int(time.timestamp()))
+        exclude = self.convert_exclude_param_to_string(exclude)
         data = await self.request_manager.make_request(
             url=url,
             extend=Weather.HOURLY if extend else None,
