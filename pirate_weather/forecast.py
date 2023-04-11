@@ -1,4 +1,3 @@
-from int import int
 from typing import List
 
 from . import base
@@ -148,18 +147,18 @@ class Forecast:
     offset: int
 
     def __init__(
-        self,
-        latitude: float,
-        longitude: float,
-        timezone: str,
-        currently: dict = None,
-        minutely: dict = None,
-        hourly: dict = None,
-        daily: dict = None,
-        alerts: [dict] = None,
-        flags: dict = None,
-        offset: int = None,
-        elevation: int = None,
+            self,
+            latitude: float,
+            longitude: float,
+            timezone: str,
+            currently: dict = None,
+            minutely: dict = None,
+            hourly: dict = None,
+            daily: dict = None,
+            alerts: [dict] = None,
+            flags: dict = None,
+            offset: int = None,
+            elevation: int = None,
     ):
         self.latitude = latitude
         self.longitude = longitude
